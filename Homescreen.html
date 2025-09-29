@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PYIG CODER App</title>
+
+    <!-- Full-screen app setup -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="PYIG CODER">
+    <meta name="theme-color" content="#d9534f">
+
+    <!-- Home screen icon (Python-shaped PNG recommended) -->
+    <link rel="apple-touch-icon" href="https://i.postimg.cc/63yXBS0j/Orange-Purple-and-Pink-Modern-Tech-Logo.png">
+
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: sans-serif;
+            background-color: #d9534f;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #splash, #loading, #app-container {
+            text-align: center;
+            color: white;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 48px;
+            margin: 20px 0;
+        }
+
+        p {
+            font-size: 18px;
+            max-width: 90%;
+        }
+
+        button {
+            margin-top: 30px;
+            padding: 15px 30px;
+            font-size: 22px;
+            background-color: white;
+            color: #d9534f;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #f1f1f1;
+        }
+
+        #countdown {
+            font-size: 60px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Splash screen with instructions -->
+    <div id="splash">
+        <h1>PYIG CODER</h1>
+        <p><strong>Step 1:</strong> Add this app to your Home Screen for the best experience.</p>
+        <p><strong>iPhone / iPad:</strong> Tap the Share icon → "Add to Home Screen"</p>
+        <p><strong>Android:</strong> Tap the browser menu (⋮) → "Add to Home Screen"</p>
+        <p>Once done, click the button below to continue:</p>
+        <button id="continueBtn">Continue</button>
+    </div>
+
+    <!-- Loading screen with countdown -->
+    <div id="loading" style="display:none;">
+        <h1>LOADING...</h1>
+        <div id="countdown">5</div>
+    </div>
+
+    <!-- App iframe container -->
+    <div id="app-container" style="display:none;">
+        <iframe id="app-frame" src=""></iframe>
+    </div>
+
+    <script>
+        const continueBtn = document.getElementById('continueBtn');
+        const splash = document.getElementById('splash');
+        const loading = document.getElementById('loading');
+        const appContainer = document.getElementById('app-container');
+        const countdownEl = document.getElementById('countdown');
+
+        // Replace this URL with your Google Apps Script web app URL
+        const webAppURL = "https://script.google.com/macros/s/AKfycbySLZ5yJwC_xiu0uywJgCb2nfbYoZsaduD7hreEBxmQYSTVmpgcmsRO203HCppQeioV/exec";
+
+        continueBtn.addEventListener('click', () => {
+            // Hide splash screen
+            splash.style.display = 'none';
+            // Show loading screen
+            loading.style.display = 'flex';
+
+            // Start 5-second countdown
+            let count = 5;
+            countdownEl.textContent = count;
+
+            const interval = setInterval(() => {
+                count--;
+                countdownEl.textContent = count;
+                if (count <= 0) {
+                    clearInterval(interval);
+                    countdownEl.textContent = 'Launching...';
+                    // Hide loading, show app
+                    loading.style.display = 'none';
+                    appContainer.style.display = 'flex';
+                    document.getElementById('app-frame').src = webAppURL;
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
